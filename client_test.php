@@ -99,7 +99,6 @@ if (!isset($_SESSION['procced_id']) || empty($_SESSION['procced_id'])) {
 
 
 <?php if (!isset($_SESSION['procced_id']) || empty($_SESSION['procced_id'])) { ?>
-
     
     <div class="container-fluid">
         <div class="row">

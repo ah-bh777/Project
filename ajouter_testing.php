@@ -88,12 +88,9 @@ while($resUser = mysqli_fetch_array($resultUser)){
     <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
   <div class="step-container d-flex justify-content-between">
-    <button class="btn btn-outline-primary step-button active" onclick="displayStep(1)">select articles</button>
-    <button class="btn btn-outline-primary step-button" onclick="if($(this).hasClass('reached')){ window.location.href = 'client_test.php?user=user1' } else { displayStep(2); }">confirm articles</button>
+    <button class="btn btn-outline-primary step-button" onclick="if($(this).hasClass('reached')){ window.location.href = 'theOfficial_ajouter_article.php?user='+'<?= $cur_user ?>' } else { displayStep(1); }">select articles</button>
+    <button class="btn btn-outline-primary step-button" onclick="if($(this).hasClass('reached')){ window.location.href = 'theOfficial_client_request.php?user='+'<?= $cur_user ?>' } else { displayStep(2); }">confirm articles</button>
     <button class="btn btn-outline-primary step-button" onclick="displayStep(3)">make a report</button>
-  </div>
-  <div class="btn-container">
-    <button class="btn btn-primary" onclick="nextStep()">Next Step</button>
   </div>
 </div>
 
@@ -685,11 +682,12 @@ function displayStep(stepNumber) {
     }
 }
 
-// Check PHP session value and update currentStep if necessary
+
 <?php if(isset($_SESSION['procced_id']) && $_SESSION['procced_id'] >= 2) { ?>
     currentStep = 2;
     updateProgressBar();
 <?php } ?>
+
 
 function nextStep() {
     if (currentStep < totalSteps) {

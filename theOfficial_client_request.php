@@ -1,10 +1,7 @@
 <?php
 include("index.php");
 $user = isset($_GET['cur_user']) ? $_GET['cur_user']  : "";
-$result = mysqli_query($conn,"SELECT * FROM users where login = '$user'");
-while($res = mysqli_fetch_array($result)){
-$resName = $res['nom'];
-}
+
 
 
 if (!$user) {
@@ -36,7 +33,7 @@ if ($res = mysqli_fetch_array($result)) {
   </style>
 </head>
 <body>
-
+<script>alert("<?= $resName ?>")</script>
 <div class="navbar" style="justify-content: flex-end;">
   <div class="toggle-btn" onclick="toggleSidebar()">
     <i class="fa fa-bars fa-2x"></i>
@@ -47,7 +44,7 @@ if ($res = mysqli_fetch_array($result)) {
   <div class="dropdown">
     <div class="user-circle" onclick="toggleDropdown()">
       <img src="user.jpg" alt="User Image">
-      <div class="user-name">John Doe</div>
+      <div class="user-name"><?= $resName ?></div>
       
     </div>
     <div class="dropdown-content" id="dropdownContent">
@@ -129,6 +126,8 @@ $_GET['user'] = $user ;
 </div>
 
 <script>
+
+  
 
 function toggleDropdown() {
   var dropdownContent = document.getElementById('dropdownContent');

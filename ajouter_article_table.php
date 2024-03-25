@@ -6,7 +6,7 @@ $resultUser = mysqli_query($conn,"SELECT * FROM users where login ='$cur_user'")
 while($resUser = mysqli_fetch_array($resultUser)){
     $theName = $resUser['nom'];
 }
-
+session_start();
 
 ?>
 <!DOCTYPE html>
@@ -36,10 +36,65 @@ while($resUser = mysqli_fetch_array($resultUser)){
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Vente Articles</title>
+    <style>
+    #container {
+    max-width: 90%;  
+    }
 
+    .step-container {
+    position: relative;
+    text-align: center;
+    transform: translateY(-43%);
+    }
+
+    .step-button {
+    width: auto; /* Adjusted width to fit the text */
+    height: auto; /* Adjusted height to fit the text */
+    padding: 10px 20px; /* Added padding for better appearance */
+    border-radius: 25px; /* Adjusted border radius for button shape */
+    background-color: #fff;
+    border: 2px solid #007bff;
+    font-weight: bold;
+    font-size: 14px; /* Reduced font size */
+    margin-bottom: 10px;
+    cursor: pointer; /* Added cursor pointer */
+    }
+
+    .step-line {
+    position: absolute;
+    top: 26px;
+    left: 25px;
+    width: calc(100% - 50px);
+    height: 2px;
+    background-color: #007bff;
+    z-index: -1;
+    }
+
+    #multi-step-form {
+    overflow-x: hidden;
+    }
+
+    .reached {
+    background-color: #007bff; /* Blue color */
+    color: #fff; /* White text color */
+    }
+
+    </style>
 </head>
 <body>
+    
+<div id="container" class="container mt-5">
+  <div class="progress px-1" style="height: 3px;">
+    <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="step-container d-flex justify-content-between">
+    <button class="btn btn-outline-primary step-button active" onclick="displayStep(1)">select articles</button>
+    <button class="btn btn-outline-primary step-button" onclick="if($(this).hasClass('reached')){ window.location.href = 'theOfficial_client_request.php?cur_user='+'<?= $cur_user ?>' } else { displayStep(2); }">confirm articles</button>
+    <button class="btn btn-outline-primary step-button" onclick="displayStep(3)">make a report</button>
+  </div>
+</div>
 
+<br>
 <script> alert("<?= $cur_user; ?>")</script>
 
 <!-- Dropdown button -->
@@ -160,9 +215,7 @@ while($resUser = mysqli_fetch_array($resultUser)){
         <div class="col text-center">
             <h1 class="display-4">vent article</h1>
         </div>
-        <div class="col d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-primary" id="confirm_request">Confirm Request</button>
-        </div>
+       
     </div>
 </div>
         <input type="text" id="searchBox" class="form-control" placeholder="Search...">
@@ -262,8 +315,7 @@ $result = mysqli_query($conn, "SELECT * FROM vente_article where statut = 'selec
             </tbody>
         </table><br>
     <br><br><br><br>
-
- 
+    
 <!-- Bootstrap and other JS libraries -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -271,6 +323,9 @@ $result = mysqli_query($conn, "SELECT * FROM vente_article where statut = 'selec
 
 
     <script>
+
+
+
         // calculate part start
         function calcul(prix) {
             var qnt = $(".quantity").val();
@@ -564,9 +619,81 @@ $(document).ready(function(){
 });
 
 
-$('#confirm_request').on('click',function(){
-    window.location.href = "theOfficial_client_request.php?cur_user="+'<?= $cur_user ?>'
-})
+
+
+function NumRows() {
+    $.ajax({
+        url: "NumRows.php",
+        type: "POST",
+        data: {
+            theUser: "<?php echo $cur_user; ?>"
+        },
+        success: function(data) {
+            var rowCount = parseInt(data);
+            if (rowCount > 0) {
+                $('.step-button:eq(1)').addClass('active');
+                nextStep(); // Automatically trigger next step
+            } else {
+                $('.step-button:eq(1)').removeClass('active');
+            }
+        }
+    });
+}
+
+$(document).ready(function() {
+    NumRows(); // Call the function when the page loads
+    
+    // Event delegation for dynamically added elements
+    $('.step-container').on('click', '.step-button', function() {
+        if ($(this).hasClass('reached')) {
+            var stepNumber = $(this).index() + 1;
+            displayStep(stepNumber);
+        } else {
+            // Handle the case when the button is not reached
+            alert("Please complete the previous steps.");
+        }
+    });
+});
+
+var currentStep = 1;
+var totalSteps = 3;
+
+function updateProgressBar() {
+    var progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    $(".progress-bar").css("width", progressPercentage + "%");
+
+    if (currentStep === totalSteps) {
+        $(".step-button").addClass("reached");
+    } else {
+        $(".step-button").removeClass("reached");
+        for (var i = 1; i <= currentStep; i++) {
+            $(".step-button:nth-child(" + i + ")").addClass("reached");
+        }
+    }
+}
+
+function displayStep(stepNumber) {
+    if (stepNumber >= 1 && stepNumber <= totalSteps && stepNumber <= currentStep) {
+        if (stepNumber > 1 && !$(".step-button").hasClass("reached")) {
+            currentStep = stepNumber;
+            updateProgressBar();
+        }
+        alert("Step " + stepNumber);
+    }
+}
+
+// Check PHP session value and update currentStep if necessary
+<?php if(isset($_SESSION['procced_id']) && $_SESSION['procced_id'] >= 2) { ?>
+    currentStep = 2;
+    updateProgressBar();
+<?php } ?>
+
+function nextStep() {
+    if (currentStep < totalSteps) {
+        currentStep = 2
+        updateProgressBar();
+    }
+}
 
 
     </script>
