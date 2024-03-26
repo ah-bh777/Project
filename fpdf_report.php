@@ -2,7 +2,7 @@
 require_once('./TCPDF-main/tcpdf.php');
 include("index.php");
 
-$id = 8;
+$id = $_GET['id_report'];
 
 // Retrieve vente data
 $result1 = mysqli_query($conn, "SELECT * FROM vente WHERE id = $id");

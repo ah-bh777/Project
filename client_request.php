@@ -380,7 +380,9 @@ $("#toggleForm").click(function() {
         type : "POST",
         success : function(data){
             alert(data)
+            window.location.href = "theOfficial_modification.php?id_client=" + data + "&cur_user=<?= $cur_user ?>";
         }
+        
     })
     
 }

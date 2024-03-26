@@ -93,9 +93,10 @@ while($resTarget = mysqli_fetch_array($resultSpec)){
                                 </div>
                             </div>
                             <br>
-                            <input type="button" id="update_client" value="update" class="btn btn-primary">
-                   
-                   
+    <div class="d-flex justify-content-between">
+                <input type="button" id="update_client" value="update" class="btn btn-primary">
+                <input type="button" id="report" value="generate the report" class="btn btn-primary" >
+    </div>
                     </div>
                 </div>
             </div>
@@ -212,6 +213,11 @@ while($resTarget = mysqli_fetch_array($resultSpec)){
         }
         }
         });
+
+
+        $("#report").on('click',function(){
+            window.location.href = "fpdf_report.php?id_report="+<?= $idd ?>
+        })
 
     </script>
 </body>
