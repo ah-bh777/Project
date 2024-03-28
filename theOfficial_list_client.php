@@ -1,19 +1,23 @@
-<?php
+<?php 
 include("index.php");
-$user = $_GET['cur_user'];
-$id_mody = $_GET['id_client'];
-$result = mysqli_query($conn,"SELECT * FROM users where login = '$user'");
-while($res = mysqli_fetch_array($result)){
-$resName = $res['nom'];
-}
 
-ob_start();
+
+$user = isset($_GET['user']) ? $_GET['user'] : "";
+
+
 if (!$user) {
-  header("Location: login.php");
-  ob_end_flush(); 
-  exit; 
+   header("Location: login.php");
+   exit; 
 }
 
+$result = mysqli_query($conn,"SELECT * FROM users WHERE login = '$user'");
+if ($res = mysqli_fetch_array($result)) {
+    $resName = $res['nom'];
+} else {
+    
+    header("Location: login.php");
+    exit; 
+}
 
 ?>
 <!DOCTYPE html>
@@ -25,6 +29,7 @@ if (!$user) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style >
    @import url('./nav_effects.css');
+ 
    .profile_pic {
     width: 100px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
@@ -39,6 +44,8 @@ if (!$user) {
     color: inherit !important; /* Inherit text color */
     text-decoration: none !important; /* Remove underline on hover */
 }
+
+
   </style>
 </head>
 <body>
@@ -53,7 +60,7 @@ if (!$user) {
   <div class="dropdown">
     <div class="user-circle" onclick="toggleDropdown()">
       <img src="user.jpg" alt="User Image">
-      <div class="user-name">John Doe</div>
+      <div class="user-name"><?= $resName ?></div>
       
     </div>
     <div class="dropdown-content" id="dropdownContent">
@@ -94,8 +101,8 @@ if (!$user) {
             <i class="fa fa-user"></i> Client devis <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-            <li><a href="theOfficial_add_client_devis.php?user=<?= $user ?>">Ajouter client devis</a></li>
-            <li><a href="theOfficial_list_client.php?user='<?=$user?>'">Lister les commandes de client</a></li>
+          <li><a href="theOfficial_add_client_devis.php?user=<?= $user ?>">Ajouter client devis</a></li>
+            <li><a href="theOfficial_list_client.php?user=<?=$user?>">Lister les commandes de client</a></li>
           </ul>
         </li>
         <li>
@@ -103,7 +110,7 @@ if (!$user) {
             <i class="fa fa-check-square-o"></i> Article <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-            <li><a href="theOfficial_add_article.php">Ajouter article</a></li>
+            <li><a href="add_article.php">Ajouter article</a></li>
             <li><a href="theOfficial_list_article.php?user=<?=$user?>">Lister les articles</a></li>
           </ul>
         </li>
@@ -136,10 +143,11 @@ if (!$user) {
 </div>
 
 <div class="content">
+  
 <?php
-$_GET['user'] = $user ;
-$_GET['id_client'] = $id_mody;
- include('modification_client.php'); ?>
+$_GET['user'] = $user;
+include('list_client_devis.php');
+?>
 </div>
 
 <script>
@@ -185,6 +193,8 @@ window.onload = function() {
   }
 };
 
+
+
   function toggleChildMenu(event) {
     event.preventDefault();
     var parentMenuItem = event.target.closest('.nav > li');
@@ -209,8 +219,11 @@ window.onload = function() {
   parentMenuItems.forEach(function(item) {
     item.addEventListener('click', toggleChildMenu);
   });
+
+
 </script>
 </body>
 </html>
+
 
 

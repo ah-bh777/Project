@@ -1,4 +1,5 @@
 <?php
+// Incorrect - Output before session_start()
 require("index.php");
 $cur_user = $_GET['user'];
 
@@ -6,8 +7,9 @@ $resultUser = mysqli_query($conn,"SELECT * FROM users where login ='$cur_user'")
 while($resUser = mysqli_fetch_array($resultUser)){
     $theName = $resUser['nom'];
 }
+ob_start();
 session_start();
-
+ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html>
@@ -96,120 +98,7 @@ session_start();
 
 <br>
 <script> alert("<?= $cur_user; ?>")</script>
-
-<!-- Dropdown button -->
-<div class="dropdown">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fa fa-th" style="font-size: 20px;color: bluegray;"></i>
-    </button>
-    <div class="dropdown-menu">
-        <a id="ajoutArticle" class="dropdown-item" href="#">Ajouter article</a>
-        <a id="ajoutClient" class="dropdown-item" href="#">Ajouter client</a>
-    </div>
-</div>
-
-<!-- Modal for adding article -->
-<div class="modal fade" id="addArticleModal" tabindex="-1" role="dialog" aria-labelledby="addArticleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <!-- Modal header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="addArticleModalLabel">Ajouter un article</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-                <!-- Form for adding article -->
-                <div>
-                    <label for="code_g_article">Code</label>
-                    <input type="text" id="code_g_article" class="form-control">
-                </div>
-                <div>
-                    <label for="designation_g_article">Designation</label>
-                    <input type="text" id="designation_g_article" class="form-control">
-                </div>
-                <div>
-                    <label for="pth_article">Prix th</label>
-                    <input type="text" id="pth_article" class="form-control">
-                </div>
-                <div>
-                    <label for="unite_g_article">Unite</label>
-                    <input type="text" id="unite_g_article" class="form-control">
-                </div>
-                <div>
-                    <label for="tva_g_article">%TVA</label>
-                    <input type="text" id="tva_g_article" class="form-control">
-                </div>
-                <div>
-                    <label for="categorie_g_article">CATEGORIE</label>
-                    <input type="text" id="categorie_g_article" class="form-control">
-                </div>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="saveArticleBtn">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          
-            <div class="modal-header">
-                <h5 class="modal-title" id="addClientModalLabel">Ajouter un client</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div class="modal-body">
-                
-                <div>
-                    <label for="client_client">Client</label>
-                    <select id="client_client" class="form-control">
-                    <?php  
-        $result = mysqli_query($conn,"SELECT * FROM client");
-        while($r = mysqli_fetch_array($result)){ ?>
-            <option value="<?= $r["client"] ?>"><?= $r["client"] ?></option>
-        <?php } ?>
-                    </select>
-                </div>
-                <div>
-                    <label for="categorie_client">Catégorie</label>
-                    <select id="categorie_client" class="form-control">
-                    <?php  
-        $result = mysqli_query($conn,"SELECT * FROM categorie");
-        while($r = mysqli_fetch_array($result)){ ?>
-            <option value="<?= $r["categorie"] ?>"><?= $r["categorie"] ?></option>
-        <?php } ?>
-                    </select>
-                </div>
-                <div>
-                    <label for="projet_client">Projet</label>
-                    <input type="text" id="projet_client" class="form-control">
-                </div>
-                <div>
-                    <label for="description_client">Description</label>
-                    <input type="text" id="description_client" class="form-control">
-                </div>
-                <div>
-                    <label for="num_client">Num</label>
-                    <input type="text" id="num_client" class="form-control">
-                </div>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="saveClientBtn">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <br>
+     <br>
         <div class="container">
     <div class="row">
         <div class="col text-center">
@@ -323,7 +212,6 @@ $result = mysqli_query($conn, "SELECT * FROM vente_article where statut = 'selec
 
 
     <script>
-
 
 
         // calculate part start
@@ -486,73 +374,6 @@ $(".delete").on("click", function(){
 });
 
         //finish
-
-        // ADD client devis
-        $("#ajoutClient").click(function(){
-          
-            $("#addClientModal").modal("show");
-        });
-
-       
-        $("#saveClientBtn").click(function(){
-            
-            $.ajax({
-                url: "add_client_devis.php",
-                type: "POST",
-                data: {
-                   
-                    client: $("#client_client").val(),
-                    categorie: $("#categorie_client").val(),
-                    projet: $("#projet_client").val(),
-                    description: $("#description_client").val(),
-                    num: $("#num_client").val(),
-                    user : "<?= $cur_user ?>"
-                },
-                success: function(data){
-                    alert(data);
-                   
-                    $("#addClientModal").modal("hide");
-                },
-                error: function(xhr, status, error){
-                    alert("Error: " + error);
-                }
-            });
-            location.reload()
-        });
-    
-
-// finish client devis
-
-$(document).ready(function(){
-        
-        $("#ajoutArticle").click(function(){
-            $("#addArticleModal").modal("show");
-        });
-
-   
-        $("#saveArticleBtn").click(function(){
-          
-            $.ajax({
-                url: "add_new_article.php",
-                type: "POST",
-                data: {
-                    code: $('#code_g_article').val(),
-                    article: $('#designation_g_article').val(), 
-                    prix_ht: $('#pth_article').val(),
-                    unite: $('#unite_g_article').val(),
-                    tva: $('#tva_g_article').val(),
-                    categorie: $('#categorie_g_article').val()
-                },
-                success: function(data){
-                    alert(data);
-                    $("#addArticleModal").modal("hide");
-                },
-                error: function(xhr, status, error){
-                    console.log(error);
-                }
-            });
-            location.reload()
-        });})
 
 // filtering mechanism
     var searchBox = document.getElementById("searchBox");

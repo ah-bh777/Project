@@ -2,15 +2,16 @@
 
 include('index.php');
 
-if(isset($_POST['code'], $_POST['article'], $_POST['prix_ht'], $_POST['unite'], $_POST['tva'], $_POST['categorie'])) {
-    $code = $_POST['code']; 
-    $article = $_POST['article']; 
-    $prix_ht = $_POST['prix_ht']; 
-    $unite = $_POST['unite']; 
-    $tva = $_POST['tva']; 
-    $categorie = $_POST['categorie'];
+$code = $_POST['code']; 
+$article = $_POST['designation']; 
+$prix_ht = $_POST['prix_th']; 
+$unite = $_POST['unite']; 
+$tva = $_POST['tva']; 
+$categorie = $_POST['categorie'];
 
-   
+
+if(isset($code, $article, $prix_ht, $unite, $tva, $categorie)) {
+
     
     $sql = "INSERT INTO `article`(`code`,`article`,`unite`,`categorie`,`prix_ht`,`tva`) 
             VALUES ('$code','$article','$unite','$categorie','$prix_ht','$tva')";
