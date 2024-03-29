@@ -60,7 +60,7 @@ if ($res = mysqli_fetch_array($result)) {
   <!-- Dropdown integration -->
   <div class="dropdown">
     <div class="user-circle" onclick="toggleDropdown()">
-      <img src="user.jpg" alt="User Image">
+      <img src="OIP.jpg" alt="User Image">
       <div class="user-name"><?= $resName ?></div>
       
     </div>
@@ -78,12 +78,13 @@ if ($res = mysqli_fetch_array($result)) {
 <br>
 <div class="profile clearfix">
 
-              <div class="profile_pic">
-                <img src="BlackRock-investment-shutterstock_1324038479.jpg" alt="..." class="img-circle profile_img">
+   
+<div class="profile_pic">
+                <img src="OIP.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Bienvenue,</span>
-                <h2>Compte User1</h2>
+                <span>     Bienvenue,</span>
+                <h2>  Compte <?= $user ?></h2>
               </div>
             </div>
   <br>
@@ -91,7 +92,7 @@ if ($res = mysqli_fetch_array($result)) {
       <ul class="nav side-menu">
         <li>
           <a>
-            <i class="fa fa-bar-chart-o"></i> Tableau de bord <span class="fa fa-chevron-down"></span>
+            <i class="fa fa-bar-chart-o"></i> Tableau de bord       <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
             <li><a href="index.php">TB</a></li>
@@ -99,7 +100,7 @@ if ($res = mysqli_fetch_array($result)) {
         </li>
         <li>
           <a>
-            <i class="fa fa-user"></i> Client devis <span class="fa fa-chevron-down"></span>
+            <i class="fa fa-user"></i> Client devis                <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
           <li><a href="theOfficial_add_client_devis.php?user=<?= $user ?>">Ajouter client devis</a></li>
@@ -108,40 +109,29 @@ if ($res = mysqli_fetch_array($result)) {
         </li>
         <li>
           <a>
-            <i class="fa fa-check-square-o"></i> Article <span class="fa fa-chevron-down"></span>
+            <i class="fa fa-check-square-o"></i> Article                        <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-            <li><a href="theOfficial_add_article.php">Ajouter article</a></li>
-            <li><a href="theOfficial_list_article.php?user=<?=$user?>">Lister les articles</a></li>
+          <li><a href="theOfficial_add_article.php?user=<?=$user?>">Ajouter article</a></li>
+            <li><a href="theOfficial_list_article.php?user=<?=$user?>">Lister les articles                   </a></li>
           </ul>
         </li>
+        <li>
+    <a>
+      <i class="fa fa-file-text-o"></i>Mes rapports              <span class="fa fa-chevron-down"></span>
+    </a>
+    <ul class="nav child_menu">
+      <li><a href="theOfficial_report_history.php?user=<?= $user ?>">Consulter l'historique</a></li>
+    </ul>
+  </li>
       </ul>
+      
     </div>
 
-    <div class="menu_section">
-      <h3>Stages</h3>
-      <ul class="nav side-menu">
-        <li>
-          <a>
-            <i class="fa fa-building"></i> Stage Processus <span class="fa fa-chevron-down"></span>
-          </a>
-          <ul class="nav child_menu">
-            <li><a href="global.html">Statut Stages</a></li>
-          </ul>
-        </li>
-        <li>
-          <a>
-            <i class="fa fa-graduation-cap"></i> PFE & Diplome <span class="fa fa-chevron-down"></span>
-          </a>
-          <ul class="nav child_menu">
-            <li><a href="endadrant_pfe.php">Encadrant</a></li>
-            <li><a href="suivi_pfe.php">Suivi PFE</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+   
   </div>
 </div>
+
 
 <div class="content">
   

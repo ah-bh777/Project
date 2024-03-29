@@ -171,7 +171,7 @@ while($resTarget = mysqli_fetch_array($resultSpec)){
 
         $(document).ready(function() {
     $("#update_client").on("click", function() {
-        var idd = "<?php echo $idd; ?>"; // Assuming $idd is a PHP variable containing the ID
+        var idd = "<?php echo $idd; ?>"; 
         var categorie = $("#categorie_client").val();
         var client = $("#client_client").val();
         var num = $("#num_client").val();
@@ -216,7 +216,21 @@ while($resTarget = mysqli_fetch_array($resultSpec)){
 
 
         $("#report").on('click',function(){
-            window.location.href = "fpdf_report.php?id_report="+<?= $idd ?>
+            $.ajax({
+                url : "report_saver.php",
+                type : "GET",
+                data : {
+                     id : <?= $idd ?> ,
+                     user : '<?= $user ?>'
+                },
+                success : function(data){
+                alert(data)
+                window.location.href = "fpdf_report.php?id_report="+<?= $idd ?>
+            }
+            }
+           
+            )
+            
         })
 
     </script>

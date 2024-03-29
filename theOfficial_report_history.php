@@ -2,12 +2,22 @@
 include("index.php");
 
 
-$user = isset($_GET['user']) ? $_GET['user'] : "";
+$user = isset($_GET['user']) ? $_GET['user'] : "user1";
 
+ob_start();
+if (!$user) {
+   header("Location: login.php");
+   ob_end_flush(); 
+   exit; 
+}
 
 $result = mysqli_query($conn,"SELECT * FROM users WHERE login = '$user'");
 if ($res = mysqli_fetch_array($result)) {
     $resName = $res['nom'];
+} else {
+    
+    header("Location: login.php");
+    exit; 
 }
 
 ?>
@@ -67,7 +77,6 @@ if ($res = mysqli_fetch_array($result)) {
     <div class="menu_section">
 <br>
 <div class="profile clearfix">
-
    
 <div class="profile_pic">
                 <img src="OIP.jpg" alt="..." class="img-circle profile_img">
@@ -124,19 +133,14 @@ if ($res = mysqli_fetch_array($result)) {
 
 
 <div class="content">
-
+  
 <?php
-
 $_GET['user'] = $user;
-include('add_client_devis_page.php');
+include('report_history_page.php');
 ?>
 </div>
 
 <script>
-
-
-
-
 
 function toggleDropdown() {
   var dropdownContent = document.getElementById('dropdownContent');
