@@ -21,7 +21,7 @@ if (!$user) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Side Menu Example</title>
+  <title>Modifier le client requete</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style >
    @import url('./nav_effects.css');
@@ -52,8 +52,8 @@ if (!$user) {
   <!-- Dropdown integration -->
   <div class="dropdown">
     <div class="user-circle" onclick="toggleDropdown()">
-      <img src="user.jpg" alt="User Image">
-      <div class="user-name">John Doe</div>
+      <img src="OIP.jpg" alt="User Image">
+      <div class="user-name"><?= $resName ?></div>
       
     </div>
     <div class="dropdown-content" id="dropdownContent">
@@ -87,7 +87,7 @@ if (!$user) {
             <i class="fa fa-bar-chart-o"></i> Tableau de bord       <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-            <li><a href="index.php">TB</a></li>
+          <li><a href="theOfficial_chart_page.php?user=<?= $user ?>">TB</a></li>
           </ul>
         </li>
         <li>

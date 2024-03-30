@@ -5,9 +5,18 @@ include("index.php");
 $user = isset($_GET['user']) ? $_GET['user'] : "";
 
 
+if (!$user) {
+   header("Location: login.php");
+   exit; 
+}
+
 $result = mysqli_query($conn,"SELECT * FROM users WHERE login = '$user'");
 if ($res = mysqli_fetch_array($result)) {
     $resName = $res['nom'];
+} else {
+    
+    header("Location: login.php");
+    exit; 
 }
 
 ?>
@@ -16,8 +25,8 @@ if ($res = mysqli_fetch_array($result)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
-  <title>Ajouter client devis/commande</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style >
    @import url('./nav_effects.css');
@@ -68,7 +77,6 @@ if ($res = mysqli_fetch_array($result)) {
     <div class="menu_section">
 <br>
 <div class="profile clearfix">
-
    
 <div class="profile_pic">
                 <img src="OIP.jpg" alt="..." class="img-circle profile_img">
@@ -86,7 +94,7 @@ if ($res = mysqli_fetch_array($result)) {
             <i class="fa fa-bar-chart-o"></i> Tableau de bord       <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-          <li><a href="theOfficial_chart_page.php?user=<?= $user ?>">TB</a></li>
+            <li><a href="theOfficial_chart_page.php?user=<?= $user ?>">TB</a></li>
           </ul>
         </li>
         <li>
@@ -124,20 +132,16 @@ if ($res = mysqli_fetch_array($result)) {
 </div>
 
 
+
 <div class="content">
-
+  
 <?php
-
 $_GET['user'] = $user;
-include('add_client_devis_page.php');
+include('chartPage.php');
 ?>
 </div>
 
 <script>
-
-
-
-
 
 function toggleDropdown() {
   var dropdownContent = document.getElementById('dropdownContent');

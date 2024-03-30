@@ -23,7 +23,8 @@ if ($res = mysqli_fetch_array($result)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Side Menu Example</title>
+  <title>Ajouter article</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style >
    @import url('./nav_effects.css');
@@ -91,7 +92,7 @@ if ($res = mysqli_fetch_array($result)) {
             <i class="fa fa-bar-chart-o"></i> Tableau de bord       <span class="fa fa-chevron-down"></span>
           </a>
           <ul class="nav child_menu">
-            <li><a href="index.php">TB</a></li>
+          <li><a href="theOfficial_chart_page.php?user=<?= $user ?>">TB</a></li>
           </ul>
         </li>
         <li>
