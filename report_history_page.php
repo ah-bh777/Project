@@ -89,7 +89,7 @@ while ($res = mysqli_fetch_array($result)) {
                 $resultInfos = mysqli_query($conn,"SELECT * FROM vente where id = '$id'");
                 while($resInfo = mysqli_fetch_array($resultInfos)){
                     // Fetch additional information using a single query
-                    $result_vente_article = mysqli_query($conn,"SELECT  SUM(prix_ht * quantite * tva) as total ,count(article) as articles FROM vente_article where id_vente = '$id'");
+                    $result_vente_article = mysqli_query($conn,"SELECT  SUM((prix_ht * quantite) * tva) as total ,count(article) as articles FROM vente_article where id_vente = '$id'");
                     $res_vente_article = mysqli_fetch_array($result_vente_article);
                     ?>
                     <li class='list-group-item' onclick="toggleForm(this)"> 

@@ -38,6 +38,13 @@ $pdf->AddPage();
 
 // Set font
 $pdf->SetFont('helvetica', '', 10);
+$imageWidth = 50; // Adjust as needed
+$imageHeight = 20; // Adjust as needed
+
+$imageX = $pdf->getPageWidth() - $imageWidth - 10 - 10; // Adjust the padding and the extra 20 pixels to the left
+$imageY = 10 + 10; // Move 10 pixels down from the original position
+
+$pdf->Image("logo.jpg", $imageX, $imageY, $imageWidth, $imageHeight);
 
 // Display vente data
 $pdf->Cell(50, 7, 'Client:', 0, 0, 'R');
@@ -63,8 +70,8 @@ $pdf->Cell(50, 7, 'Statut:', 0, 0, 'R');
 $pdf->Cell(50, 7, $statut, 0, 1, 'L');
 $pdf->Cell(50, 7, 'Date Creation:', 0, 0, 'R');
 $pdf->Cell(50, 7, $date_creation, 0, 0, 'L');
-$pdf->Cell(50, 7, 'User:', 0, 0, 'R');
-$pdf->Cell(50, 7, $user, 0, 1, 'L');
+$pdf->Cell(50, 7, 'Categorie:', 0, 0, 'R');
+$pdf->Cell(50, 7, $categorie, 0, 1, 'L');
 $pdf->Ln(); // Add a line break
 
 // Retrieve vente article data
@@ -133,10 +140,33 @@ while ($row = mysqli_fetch_array($result3)) {
 }
 
 // Close the last table
-$html .= '</table>';
+$html .= '</table><br>';
+
+$result_vente_article = mysqli_query($conn,"SELECT  SUM((prix_ht * quantite)) as total , SUM(tva) as total_tva ,count(article) as articles FROM vente_article where id_vente = '$id'");
+$res_vente_article = mysqli_fetch_array($result_vente_article);
+
+
 
 // Write HTML content to PDF
 $pdf->writeHTML($html, true, false, true, false, '');
+
+$pdf->Cell(130, 7, '', 0, 0, ''); // skip the line
+$pdf->Cell(30, 7, "Total total", 1, 0, 'L');
+$pdf->Cell(30, 7, (int)round($res_vente_article['total'], 2), 1, 1, 'L');
+$pdf->Cell(130, 7, '', 0, 0, ''); // skip the line
+$pdf->Cell(30, 7, "Prix TTC", 1, 0, 'L');
+$pdf->Cell(30, 7, (int)round($res_vente_article['total'] * $res_vente_article['total_tva'], 2), 1, 1, 'L');
+
+$imageWidth = 50; // Adjust as needed
+$imageHeight = 20; // Adjust as needed
+
+$imageX = $pdf->getPageWidth() - $imageWidth - 10 - 10; // Adjust the padding and the extra 20 pixels to the left
+$imageY = $pdf->GetY() + 10; // Move 10 pixels down from the current position
+
+$pdf->Image("sign.PNG", $imageX, $imageY, $imageWidth, $imageHeight);
+
+$pdf->Cell(130, 7, '', 0, 1, ''); // skip the line
+
 
 // Output PDF
 $pdf->Output('example.pdf', 'I');
