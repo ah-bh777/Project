@@ -1,7 +1,7 @@
 <?php 
 include("index.php");
 
-$user =  $_GET['user'];
+$user =  $_GET['user']; 
 
 // Fetch data for vente_count and date_creation
 $result = mysqli_query($conn,"SELECT COUNT(*) AS vente_count, vente.date_creation 
